@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <title>Phantom Press</title>
+    <link rel="stylesheet" href="../phantomstyles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="footer">
+        <!-- Header with logo and navigation -->
+        <header>
+            <button class="hamburger" id="hamburger-button">
+                <img src="../hamburger-icon.png" alt="Menu">
+            </button>
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../logo.png">
+                </a>
+            </div>
+            <nav id="desktop-menu" class="desktop-nav">
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="News.html">News</a></li>
+                    <li><a href="ExPress.html">ExPress</a></li>
+                    <li><a href="Allarticles.html">All Articles</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <nav id="mobile-menu" class="hidden">
+                <button class="close-button" id="close-button">x</button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="News.html">News</a></li>
+                    <li><a href="ExPress.html">ExPress</a></li>
+                    <li><a href="Allarticles.html">All Articles</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main content section -->
+        <main class="main">
+            <section id = "about">
+                <div class="about">
+                    <h4>About</h4>
+                    <br>
+                    <p>Phantom Press is Lord Byng’s student-run, independent newspaper. The publication aims to publish throughout the year and covers staff and student-related topics objectively and professionally. For distribution to the student body and community, our team of student journalists conducts research, writes, and edits articles on a broad range of subjects and concerns for Byng's newspaper. As a club, we want to give our Byng community accurate, trustworthy, and timely news while also giving journalists a platform and a place to freely express themselves.
+                    <br><br>Phantom Press encourages editorials, opinion pieces, and creative works, allowing students to discuss the issues that matter to them. Additionally, participating in Phantom Press provides students with valuable opportunities to develop skills in journalism, including researching, writing, editing, and critical thinking.</p>
+                    <br>
+                    <h6>Our Team</h6>
+                    <br>
+            <div class="team-container" id="team-list"></div>
+            </div>
+            </section>
+        </main>
+    </div>
+    <br>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../logo.png" height="60px" width = "auto">
+                <div class="social-icons">
+                    <a href="mailto:byngnewspaperclub@gmail.com"><img src="../mail social.png" alt="Email"></a>
+                    <a href="https://www.instagram.com/byngnewspaperclub/" target="_blank"><img src="../insta social.png" alt="Instagram"></a>
+                </div>
+            </div>
+            <div class="footer-about">
+                <h2>About Phantom Press</h2>
+                <p>
+                    Phantom Press is Lord Byng's student-led, independent newspaper.
+                    Phantom Press covers topics relevant to students and staff of Byng in a professional manner.
+                </p>
+                <p>
+                    We gratefully acknowledge that we report the news from the traditional and unceded territory
+                    of the xwməθkwəy̓əm (Musqueam), Sḵwx̱wú7mesh Úxwumixw (Squamish), and səl̓ílwətaʔɬ (Tsleil-Waututh) Peoples.
+                </p>
+            </div>
+            <!-- Site Map section in Footer -->
+            <div class="sitemap">
+
+                <h3>Site Map</h3>
+                <ul> 
+                    <li><a href="../index.html" class="sitemap-link">Home</a></li>
+                    <li><a href="News.html" class="sitemap-link">News</a></li>
+                    <li><a href="ExPress.html" class="sitemap-link">ExPress</a></li>
+                    <li><a href="Allarticles.html" class="sitemap-link">All Articles</a></li>
+                    <li><a href="About.html" class="sitemap-link">About</a></li>
+                    <li><a href="Contact.html" class="sitemap-link">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Phantom Press. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="../phscript.js"></script>
+    <script>
+        const SHEET_ID = '1c8v1J5hhyKN72zRbhwtkgsw558JJKKm7EKQ0lb-ZbVo';
+const API_KEY = 'AIzaSyAc04F5b2l3-BhRNO3em_RcY6tnCng40X0';
+const SHEET_NAME = 'Team';
+
+const apiURL = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
+
+fetch(apiURL)
+  .then(res => res.json())
+  .then(data => {
+    const rows = data.values;
+    const headers = rows[0];
+    const entries = rows.slice(1);
+
+    const nameIdx = headers.indexOf('Name');
+    const roleIdx = headers.indexOf('Role');
+    const bioIdx = headers.indexOf('Bio');
+    const pictureIdx = headers.indexOf('Picture');
+
+    entries.forEach(row => {
+      const name = row[nameIdx];
+      const role = row[roleIdx];
+      const bio = row[bioIdx];
+      const picture = row[pictureIdx] ? convertDriveLink(row[pictureIdx]) : '';
+
+      document.getElementById('team-list').innerHTML += `
+        <div class="team-member">
+          <img src="${picture}" alt="${name}">
+          <div class="member-info">
+            <div class="member-name">${name}</div>
+            <div class="member-role">${role}</div>
+            <div class="member-bio">${bio}</div>
+          </div>
+        </div>
+      `;
+    });
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById('team-list').innerHTML = `<p>Error loading team members.</p>`;
+  });
+
+function convertDriveLink(url) {
+    const id = url.split('/d/')[1].split('/')[0];
+    return `https://drive.google.com/thumbnail?id=${id}&sz=s1000`;
+}
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll to the top of the page
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>

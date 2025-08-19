@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <title>Phantom Press</title>
+    <link rel="stylesheet" href="../phantomstyles.css">
+    <style>
+
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+  }
+  
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="footer">
+        <!-- Header with logo and navigation -->
+        <header>
+            <button class="hamburger" id="hamburger-button">
+                <img src="../hamburger-icon.png" alt="Menu">
+            </button>
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../logo.png">
+                </a>
+            </div>
+            <nav id="desktop-menu" class="desktop-nav">
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="News.html">News</a></li>
+                    <li><a href="ExPress.html">ExPress</a></li>
+                    <li><a href="Allarticles.html">All Articles</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <nav id="mobile-menu" class="hidden">
+                <button class="close-button" id="close-button">x</button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="News.html">News</a></li>
+                    <li><a href="ExPress.html">ExPress</a></li>
+                    <li><a href="Allarticles.html">All Articles</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+
+                </ul>
+            </nav>
+        </header>
+
+       <main class = "main">
+        <div class="express">
+        <section id="updates">
+      <!--<h2>Updates</h2>-->
+      <div id="update-list" class="card-grid"></div>
+    </section>
+    <section id="videos">
+      <!--<h2>Phantom Express</h2>-->
+      <p></p>
+      <div id="video-list" class="card-grid"></div>
+    </section>
+    </div>
+  </main>
+    </div>
+    <br>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../logo.png" height="60px" width = "auto">
+                <div class="social-icons">
+                    <a href="mailto:byngnewspaperclub@gmail.com"><img src="../mail social.png" alt="Email"></a>
+                    <a href="https://www.instagram.com/byngnewspaperclub/" target="_blank"><img src="../insta social.png" alt="Instagram"></a>
+                </div>
+            </div>
+            <div class="footer-about">
+                <h2>About Phantom Press</h2>
+                <p>
+                    Phantom Press is Lord Byng's student-led, independent newspaper.
+                    Phantom Press covers topics relevant to students and staff of Byng in a professional manner.
+                </p>
+                <p>
+                    We gratefully acknowledge that we report the news from the traditional and unceded territory
+                    of the xwməθkwəy̓əm (Musqueam), Sḵwx̱wú7mesh Úxwumixw (Squamish), and səl̓ílwətaʔɬ (Tsleil-Waututh) Peoples.
+                </p>
+            </div>
+            <!-- Site Map section in Footer -->
+            <div class="sitemap">
+
+                <h3>Site Map</h3>
+                <ul>
+                    <li><a href="../index.html" class="sitemap-link">Home</a></li>
+                    <li><a href="News.html" class="sitemap-link">News</a></li>
+                    <li><a href="ExPress.html" class="sitemap-link">ExPress</a></li>
+                    <li><a href="Allarticles.html" class="sitemap-link">All Articles</a></li>
+                    <li><a href="About.html" class="sitemap-link">About</a></li>
+                    <li><a href="Contact.html" class="sitemap-link">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Phantom Press. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="../phscript.js"></script>
+    <script>
+        const SHEET_ID = '1c8v1J5hhyKN72zRbhwtkgsw558JJKKm7EKQ0lb-ZbVo';
+const API_KEY = 'AIzaSyAc04F5b2l3-BhRNO3em_RcY6tnCng40X0';
+const SHEET_NAME = 'ExPress';
+
+const ExPressLink = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
+
+fetch(ExPressLink)
+  .then(res => res.json())
+  .then(data => {
+    const rows = data.values;
+    const headers = rows[0];
+    const entries = rows.slice(1);
+
+    if (!entries || entries.length === 0) {
+      document.querySelector('main').innerHTML = `
+        <section class="main">
+          <p>We are working on this page as of now. Please visit this page later.</p>
+        </section>`;
+      return;
+    }
+
+
+    const titleIdx = headers.indexOf('Title');
+    const contentIdx = headers.indexOf('Content');
+    const dateIdx = headers.indexOf('Date');
+    const videoIdx = headers.indexOf('Video Link');
+
+    entries.forEach(row => {
+      const title = row[titleIdx];
+      const content = row[contentIdx];
+      const date = row[dateIdx];
+      const video = row[videoIdx];
+
+      if (video) {
+        const videoId = extractYouTubeId(video);
+        console.log(videoId)
+        if (videoId) {
+          document.getElementById('video-list').innerHTML += `
+            <div class="card">
+              <h3>${title}</h3>
+              <p><small>${date}</small></p>
+              <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+              <p>${content}</p>
+            </div>`;
+        }
+      } else {
+        document.getElementById('update-list').innerHTML += `
+          <div class="card">
+            <h3>${title}</h3>
+            <p><small>${date}</small></p>
+            <p>${content}</p>
+          </div>`;
+      }
+    });
+  })
+  .catch(err => {
+    document.body.innerHTML += `<p>Error loading content. Please try again later.</p>`;
+    console.error(err);
+  });
+
+function extractYouTubeId(url) {
+  let videoId = null;
+
+  if (url.includes("youtu.be/")) {
+    // Shortened URL
+    videoId = url.split("youtu.be/")[1].split(/[?&]/)[0];
+  } 
+  else if (url.includes("watch?v=")) {
+    // Standard watch link
+    videoId = url.split("watch?v=")[1].split("&")[0];
+  } 
+  else if (url.includes("/embed/")) {
+    // Embed URL
+    videoId = url.split("/embed/")[1].split(/[?&]/)[0];
+  } 
+  else if (url.includes("youtube.com/v/")) {
+    // Old Flash embed format
+    videoId = url.split("youtube.com/v/")[1].split(/[?&]/)[0];
+  }
+
+  return videoId;
+}
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll to the top of the page
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
+
