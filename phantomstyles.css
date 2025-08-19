@@ -350,7 +350,7 @@ padding: 2px;
   color: #BB2C2C;
 }
 .copyright {
-justify-self: center;
+text-align: center;
 font-size: 15px;
 color: #BB2C2C;
 margin-top: 10px;
