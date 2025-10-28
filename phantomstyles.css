@@ -446,7 +446,7 @@ margin: 20px auto;
   }
   .footer-container {
     width: 100%;
-    margin: 0 auto;
+    margin: 0 0;
     padding-top: 10px;
     display: flex;
     justify-content: space-between;
